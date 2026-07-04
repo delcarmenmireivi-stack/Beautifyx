@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautifyx | Panel de Control</title>
+
+    <link rel="stylesheet" href="estilos.css?v=5">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="favicon.ico" alt="Beautifyx">
+      <div>
+        <h2>Beautifyx</h2>
+        <span>Simplifica tu gestión</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <button class="nav-item activo" data-tab="inicio" data-roles="cliente,barberia,salon,administrador"><i class="fa-solid fa-house"></i><span>Inicio</span></button>
+
+      <!-- Barbería / Salón -->
+      <button class="nav-item" data-tab="citas" data-roles="barberia,salon"><i class="fa-solid fa-calendar-days"></i><span>Citas</span></button>
+      <button class="nav-item" data-tab="servicios" data-roles="barberia,salon"><i class="fa-solid fa-scissors"></i><span>Servicios</span></button>
+      <button class="nav-item" data-tab="personal" data-roles="barberia,salon"><i class="fa-solid fa-user-group"></i><span>Personal</span></button>
+      <button class="nav-item" data-tab="clientes" data-roles="barberia,salon"><i class="fa-solid fa-address-book"></i><span>Clientes</span></button>
+      <button class="nav-item" data-tab="reportes" data-roles="barberia,salon"><i class="fa-solid fa-chart-line"></i><span>Reportes</span></button>
+      <button class="nav-item" data-tab="mantenimiento" data-roles="barberia,salon"><i class="fa-solid fa-screwdriver-wrench"></i><span>Mantenimiento</span></button>
+
+      <!-- Cliente -->
+      <button class="nav-item" data-tab="buscar" data-roles="cliente"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar Negocios</span></button>
+      <button class="nav-item" data-tab="favoritos" data-roles="cliente"><i class="fa-solid fa-heart"></i><span>Favoritos</span></button>
+      <button class="nav-item" data-tab="miscitas" data-roles="cliente"><i class="fa-solid fa-book"></i><span>Mis Citas</span></button>
+      <button class="nav-item" data-tab="mantenimiento" data-roles="cliente"><i class="fa-solid fa-screwdriver-wrench"></i><span>Mantenimiento</span></button>
+
+      <!-- Administrador -->
+      <button class="nav-item" data-tab="aprobaciones" data-roles="administrador"><i class="fa-solid fa-clipboard-check"></i><span>Solicitudes</span></button>
+      <button class="nav-item" data-tab="usuarios" data-roles="administrador"><i class="fa-solid fa-users"></i><span>Usuarios</span></button>
+      <button class="nav-item" data-tab="mantenimiento" data-roles="administrador"><i class="fa-solid fa-screwdriver-wrench"></i><span>Mantenimiento</span></button>
+
+      <!-- Todos -->
+      <button class="nav-item" data-tab="alertas" data-roles="cliente,barberia,salon,administrador"><i class="fa-solid fa-triangle-exclamation"></i><span>Alertas</span></button>
+      <button class="nav-item" data-tab="about" data-roles="cliente,barberia,salon,administrador"><i class="fa-solid fa-circle-info"></i><span>About</span></button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" data-tab="configuracion" data-roles="cliente,barberia,salon,administrador"><i class="fa-solid fa-gear"></i><span>Configuración</span></button>
+      <button class="nav-item boton-salir-sidebar" id="btnCerrarSesion"><i class="fa-solid fa-right-from-bracket"></i><span>Cerrar sesión</span></button>
+    </div>
+  </aside>
+
+  <!-- ============ CONTENIDO PRINCIPAL ============ -->
+  <div class="contenido-principal">
+
+    <header class="topbar">
+      <button class="boton-menu-movil" id="btnMenuMovil"><i class="fa-solid fa-bars"></i></button>
+      <div class="saludo-topbar">
+        <h1 id="saludo-usuario">¡Hola! 👋</h1>
+        <p id="fecha-actual">—</p>
+      </div>
+      <div class="acciones-topbar">
+        <div class="contenedor-notif">
+          <button id="btnNotificaciones" class="boton-icono" title="Notificaciones">
+            <i class="fa-solid fa-bell"></i>
+            <span id="badge-notificaciones" class="badge-contador oculto">0</span>
+          </button>
+          <div id="panel-notificaciones" class="panel-notificaciones oculto">
+            <h4>🔔 Notificaciones</h4>
+            <div id="lista-notificaciones"><p class="sin-citas">No tienes notificaciones nuevas.</p></div>
+          </div>
+        </div>
+        <button id="btnModoOscuro" class="boton-icono" title="Modo oscuro"><i class="fa-solid fa-moon"></i></button>
+        <div class="perfil-usuario" id="btnAbrirPerfil" title="Ver mi perfil">
+          <div class="avatar" id="avatar-usuario">?</div>
+          <div class="perfil-usuario-texto">
+            <strong id="nombre-usuario">Cargando...</strong>
+            <small id="tipo-usuario">—</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Banner de alerta global (solo visible si hay una alerta activa) -->
+    <div id="banner-alerta" class="banner-alerta oculto"></div>
+
+    <main class="area-scroll">
+
+      <!-- ============ SECCIÓN: INICIO ============ -->
+      <section id="seccion-inicio" class="seccion-dashboard">
+
+        <!-- ---- Inicio: Negocio (Barbería / Salón) ---- -->
+        <div id="panel-negocio" class="oculto">
+            <section class="dashboard-financiero">
+                <div class="tarjeta-metrica ingresos-caja">
+                    <h4>Ingresos de Hoy</h4>
+                    <p class="monto-dinero" id="total-ingresos-hoy">RD$ 0.00</p>
+                    <span class="subtexto-dashboard">Basado en citas</span>
+                </div>
+                <div class="tarjeta-metrica">
+                    <h4>Citas de Hoy</h4>
+                    <p class="monto-dinero" id="total-citas">0</p>
+                    <span class="subtexto-dashboard">Agendadas</span>
+                </div>
+                <div class="tarjeta-metrica">
+                    <h4>Clientes</h4>
+                    <p class="monto-dinero" id="clientes-registrados">0</p>
+                    <span class="subtexto-dashboard">Registrados hoy</span>
+                </div>
+                <div class="tarjeta-metrica demanda-servicios">
+                    <h4>Ocupación</h4>
+                    <p class="monto-dinero" id="porcentaje-ocupacion">0%</p>
+                    <span class="subtexto-dashboard">Agenda del día</span>
+                </div>
+            </section>
+
+            <div class="fila-dos-columnas">
+                <div class="tarjeta-panel">
+                    <div class="cabecera-tarjeta">
+                        <h3><i class="fa-solid fa-calendar-check"></i>Próximas Citas de Hoy</h3>
+                    </div>
+                    <div id="proximas-citas-inicio"><p class="sin-citas">Cargando...</p></div>
+                </div>
+
+                <div class="tarjeta-panel">
+                    <div class="cabecera-tarjeta">
+                        <h3><i class="fa-solid fa-chart-line"></i>Ingresos de la Semana</h3>
+                    </div>
+                    <p class="grafico-total" id="grafico-total-semana">RD$ 0.00</p>
+                    <div class="contenedor-grafico" id="grafico-semanal"></div>
+                </div>
+            </div>
+
+            <div class="tarjeta-panel">
+                <h3><i class="fa-solid fa-bolt"></i>Accesos Rápidos</h3>
+                <div class="grid-accesos">
+                    <button class="acceso-rapido" data-ir-tab="citas"><i class="fa-solid fa-calendar-plus"></i>Nueva Cita</button>
+                    <button class="acceso-rapido" data-ir-tab="servicios"><i class="fa-solid fa-scissors"></i>Servicios</button>
+                    <button class="acceso-rapido" data-ir-tab="personal"><i class="fa-solid fa-user-plus"></i>Personal</button>
+                    <button class="acceso-rapido" data-ir-tab="reportes"><i class="fa-solid fa-chart-simple"></i>Reportes</button>
+                    <button class="acceso-rapido" data-ir-tab="configuracion"><i class="fa-solid fa-gear"></i>Configuración</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---- Inicio: Administrador ---- -->
+        <div id="panel-admin" class="oculto">
+            <section class="dashboard-financiero">
+                <div class="tarjeta-metrica"><h4>Usuarios</h4><p class="monto-dinero" id="admin-total-usuarios">0</p><span class="subtexto-dashboard">Registrados</span></div>
+                <div class="tarjeta-metrica"><h4>Negocios</h4><p class="monto-dinero" id="admin-total-negocios">0</p><span class="subtexto-dashboard">Barberías + Salones</span></div>
+                <div class="tarjeta-metrica demanda-servicios"><h4>Solicitudes</h4><p class="monto-dinero" id="admin-total-pendientes">0</p><span class="subtexto-dashboard">Por revisar</span></div>
+                <div class="tarjeta-metrica"><h4>Citas</h4><p class="monto-dinero" id="admin-total-citas">0</p><span class="subtexto-dashboard">Registradas en total</span></div>
+            </section>
+            <div class="tarjeta-panel">
+                <h3>Resumen de la plataforma</h3>
+                <p>Desde aquí puedes supervisar toda la actividad de Beautifyx: usuarios, negocios y citas registradas.</p>
+                <button class="boton-agendar" id="btnIrAprobaciones" style="margin-top:14px">Ver solicitudes</button>
+            </div>
+        </div>
+
+        <!-- ---- Inicio: Cliente ---- -->
+        <div id="panel-cliente" class="oculto">
+            <div class="tarjeta-panel bienvenida-cliente">
+                <h3 id="saludo-cliente">¡Bienvenido/a a Beautifyx!</h3>
+                <p>Encuentra la barbería o salón perfecto y agenda tu próxima cita.</p>
+                <button class="boton-agendar" id="btnIrBuscar" style="margin-top:14px">🔍 Buscar negocios</button>
+            </div>
+            <section class="dashboard-financiero">
+                <div class="tarjeta-metrica"><h4>Favoritos</h4><p class="monto-dinero" id="cliente-total-favoritos">0</p><span class="subtexto-dashboard">Negocios guardados</span></div>
+                <div class="tarjeta-metrica"><h4>Citas</h4><p class="monto-dinero" id="cliente-total-citas">0</p><span class="subtexto-dashboard">En tu historial</span></div>
+            </section>
+            <div class="tarjeta-panel">
+                <h3><i class="fa-solid fa-bolt"></i>Accesos Rápidos</h3>
+                <div class="grid-accesos">
+                    <button class="acceso-rapido" data-ir-tab="buscar"><i class="fa-solid fa-magnifying-glass"></i>Buscar</button>
+                    <button class="acceso-rapido" data-ir-tab="favoritos"><i class="fa-solid fa-heart"></i>Favoritos</button>
+                    <button class="acceso-rapido" data-ir-tab="miscitas"><i class="fa-solid fa-book"></i>Mis Citas</button>
+                    <button class="acceso-rapido" data-ir-tab="configuracion"><i class="fa-solid fa-gear"></i>Configuración</button>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- ============ SECCIÓN: CITAS (negocio) ============ -->
+      <section id="seccion-citas" class="seccion-dashboard oculto">
+          <div class="calendario-cabecera">
+              <h3><i class="fa-solid fa-calendar-days"></i> Control de Citas del Día</h3>
+              <div style="display:flex; gap:10px; align-items:center">
+                  <input type="date" id="selector-fecha">
+                  <button class="boton-agendar" id="btnNuevaCita"><i class="fa-solid fa-plus"></i> Agendar Nueva Cita</button>
+              </div>
+          </div>
+          <p class="nota-info" style="margin-top:14px">Puedes agendar varias citas en el mismo día (con distintos profesionales). El sistema solo te dejará elegir personal libre a esa fecha y hora.</p>
+          <div class="contenedor-agenda" style="margin-top:12px">
+              <div id="lista-horarios" class="lista-horarios"></div>
+              <section class="ultimas-citas">
+                  <h3>🕘 Últimas Citas Registradas</h3>
+                  <div id="historial-citas">
+                      <p class="sin-citas">Aún no hay citas registradas.</p>
+                  </div>
+              </section>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: SERVICIOS (negocio) ============ -->
+      <section id="seccion-servicios" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <div class="cabecera-tarjeta">
+                  <h3><i class="fa-solid fa-scissors"></i>Servicios que ofreces</h3>
+                  <button class="boton-agendar" id="btnAgregarServicio"><i class="fa-solid fa-plus"></i> Agregar Servicio</button>
+              </div>
+              <p class="nota-info">Estos servicios aparecerán automáticamente al agendar una nueva cita, junto con el personal habilitado para realizarlos.</p>
+              <div class="campo-busqueda-wrap"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="input-buscar-servicio" class="campo-busqueda" placeholder="Buscar por nombre o categoría..."></div>
+              <div id="grid-servicios" class="grid-negocios" style="margin-top:16px"></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: PERSONAL (negocio) ============ -->
+      <section id="seccion-personal" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <div class="cabecera-tarjeta">
+                  <h3><i class="fa-solid fa-user-group"></i>Barberos / Estilistas / Personal</h3>
+                  <button class="boton-agendar" id="btnAgregarPersonal"><i class="fa-solid fa-plus"></i> Agregar Personal</button>
+              </div>
+              <p class="nota-info">Todo tu personal activo aparecerá automáticamente al agendar una nueva cita.</p>
+              <div class="campo-busqueda-wrap"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="input-buscar-personal" class="campo-busqueda" placeholder="Buscar por nombre o especialidad..."></div>
+              <div id="grid-personal" class="grid-negocios" style="margin-top:16px"></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: CLIENTES (negocio) ============ -->
+      <section id="seccion-clientes" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3><i class="fa-solid fa-address-book"></i>Clientes que te han visitado</h3>
+              <div class="campo-busqueda-wrap" style="max-width:320px"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="input-buscar-cliente" class="campo-busqueda" placeholder="Buscar cliente por nombre..."></div>
+              <div id="tabla-clientes-wrap" style="margin-top:16px; overflow-x:auto">
+                  <p class="sin-citas" id="clientes-vacio">Cargando...</p>
+              </div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: REPORTES (negocio) ============ -->
+      <section id="seccion-reportes" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <div class="cabecera-tarjeta">
+                  <h3><i class="fa-solid fa-chart-line"></i>Ingresos de la Semana</h3>
+              </div>
+              <p class="grafico-total" id="grafico-total-semana-reportes">RD$ 0.00</p>
+              <div class="contenedor-grafico" id="grafico-semanal-reportes" style="height:260px"></div>
+          </div>
+          <div class="tarjeta-panel">
+              <h3><i class="fa-solid fa-ranking-star"></i>Servicios más solicitados</h3>
+              <div id="ranking-servicios" class="lista-ranking"><p class="sin-citas">Cargando...</p></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: SOLICITUDES (admin) ============ -->
+      <section id="seccion-aprobaciones" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>✅ Solicitudes pendientes de revisión</h3>
+              <div id="lista-aprobaciones"><p class="sin-citas">Cargando...</p></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: USUARIOS (admin) ============ -->
+      <section id="seccion-usuarios" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>👥 Todos los usuarios</h3>
+              <div id="lista-usuarios"><p class="sin-citas">Cargando...</p></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: MANTENIMIENTO (admin, negocio y cliente) ============ -->
+      <section id="seccion-mantenimiento" class="seccion-dashboard oculto">
+
+          <!-- ---- Mantenimiento: vista para Cliente ---- -->
+          <div id="mantenimiento-cliente" class="oculto">
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-user"></i>Estado de tu cuenta</h3>
+                  <p><strong>Estado:</strong> <span id="mant-cliente-estado">—</span></p>
+                  <p><strong>Correo:</strong> <span id="mant-cliente-correo">—</span></p>
+                  <p><strong>Teléfono:</strong> <span id="mant-cliente-telefono">—</span></p>
+                  <p><strong>Miembro desde:</strong> <span id="mant-cliente-fecha">—</span></p>
+              </div>
+
+              <section class="dashboard-financiero">
+                  <div class="tarjeta-metrica"><h4>Favoritos</h4><p class="monto-dinero" id="mant-total-favoritos">0</p><span class="subtexto-dashboard">Negocios guardados</span></div>
+                  <div class="tarjeta-metrica"><h4>Citas</h4><p class="monto-dinero" id="mant-total-citas-cliente">0</p><span class="subtexto-dashboard">En tu historial</span></div>
+              </section>
+
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-triangle-exclamation"></i>Zona de riesgo</h3>
+                  <div class="fila-config-horizontal">
+                      <p class="nota-info" style="margin-bottom:0">Vacía tu lista de negocios favoritos. Puedes volver a agregarlos cuando quieras.</p>
+                      <button id="btnVaciarFavoritos" class="boton-peligro-inline"><i class="fa-solid fa-heart-crack"></i> Vaciar Favoritos</button>
+                  </div>
+                  <div class="fila-config-horizontal" style="margin-top:14px">
+                      <p class="nota-info" style="margin-bottom:0">Elimina las notificaciones que has recibido sobre tus citas (recordatorios, cambios, cancelaciones). No elimina tus citas.</p>
+                      <button id="btnLimpiarMisNotificaciones" class="boton-peligro-inline"><i class="fa-solid fa-bell-slash"></i> Limpiar Notificaciones</button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- ---- Mantenimiento: vista para Barbería / Salón ---- -->
+          <div id="mantenimiento-negocio" class="oculto">
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-shop"></i>Estado de tu cuenta</h3>
+                  <p><strong>Estado:</strong> <span id="mant-negocio-estado">—</span></p>
+                  <p><strong>Negocio:</strong> <span id="mant-negocio-nombre">—</span></p>
+                  <p><strong>Miembro desde:</strong> <span id="mant-negocio-fecha">—</span></p>
+              </div>
+
+              <section class="dashboard-financiero">
+                  <div class="tarjeta-metrica"><h4>Personal registrado</h4><p class="monto-dinero" id="mant-total-personal">0</p><span class="subtexto-dashboard">Activos e inactivos</span></div>
+                  <div class="tarjeta-metrica"><h4>Servicios registrados</h4><p class="monto-dinero" id="mant-total-servicios">0</p><span class="subtexto-dashboard">Disponibles y no disponibles</span></div>
+                  <div class="tarjeta-metrica demanda-servicios"><h4>Citas totales</h4><p class="monto-dinero" id="mant-total-citas-negocio">0</p><span class="subtexto-dashboard">Historial completo</span></div>
+              </section>
+
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-triangle-exclamation"></i>Zona de riesgo</h3>
+                  <p class="nota-info">Elimina TODAS las citas y notificaciones registradas de tu negocio. No afecta tu Personal ni tus Servicios, y no elimina tu cuenta. Esta acción no se puede deshacer.</p>
+                  <button id="btnLimpiarMiNegocio" class="boton-cerrar-sesion-grande"><i class="fa-solid fa-trash"></i> Limpiar mis citas y notificaciones</button>
+              </div>
+          </div>
+
+          <!-- ---- Mantenimiento: vista para Administrador ---- -->
+          <div id="mantenimiento-admin" class="oculto">
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-user"></i>Usuarios del Sistema</h3>
+                  <div style="overflow-x:auto">
+                      <table class="tabla-clientes">
+                          <thead><tr><th>Nombre</th><th>Rol</th><th>Estado</th></tr></thead>
+                          <tbody>
+                              <tr><td>Daireliz Delgado</td><td>Desarrolladora Web / Administradora del Sistema</td><td><span class="badge-estado badge-activo">Activo</span></td></tr>
+                              <tr><td>Arianny Nachali Díaz García</td><td>Diseñadora UX/UI / Supervisora de Diseño</td><td><span class="badge-estado badge-activo">Activo</span></td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-map-location-dot"></i>Zonas Monitoreadas</h3>
+                  <p class="nota-info">Cuentas registradas en el sistema por categoría: clientes, barberías y spas/salones.</p>
+                  <div id="tabla-usuarios-monitoreados" style="overflow-x:auto"><p class="sin-citas">Cargando...</p></div>
+              </div>
+
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-gears"></i>Configuración del Sistema</h3>
+                  <form id="form-config-sistema" class="formulario-perfil">
+                      <div class="fila-config-horizontal">
+                          <div>
+                              <label>Umbral de alertas (solicitudes pendientes antes de notificar)</label>
+                              <input type="number" id="config-umbral-alertas" min="1" value="3">
+                          </div>
+                          <button type="submit" class="boton-guardar-inline"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                      </div>
+
+                      <label>Estado del sistema</label>
+                      <select id="config-estado-sistema">
+                          <option value="operativo">Operativo</option>
+                          <option value="mantenimiento">En mantenimiento</option>
+                      </select>
+
+                      <label>Mensaje para los usuarios (se muestra como alerta si el sistema está en mantenimiento)</label>
+                      <textarea id="config-mensaje-mantenimiento" rows="3" placeholder="Ej. Estamos realizando mejoras. Volvemos en breve."></textarea>
+                  </form>
+              </div>
+
+              <div class="tarjeta-panel">
+                  <h3><i class="fa-solid fa-triangle-exclamation"></i>Zona de riesgo</h3>
+                  <div class="fila-config-horizontal">
+                      <p class="nota-info" style="margin-bottom:0">Elimina todas las citas y notificaciones registradas en el sistema (de todos los negocios). No elimina cuentas de usuario. Esta acción no se puede deshacer.</p>
+                      <button id="btnLimpiarBaseDatos" class="boton-peligro-inline"><i class="fa-solid fa-trash"></i> Limpiar Base de Datos</button>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: ALERTAS (todos) ============ -->
+      <section id="seccion-alertas" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel oculto" id="form-nueva-alerta-wrap">
+              <h3><i class="fa-solid fa-bullhorn"></i>Publicar nueva alerta</h3>
+              <form id="form-nueva-alerta" class="formulario-perfil">
+                  <label>Título</label>
+                  <input type="text" id="alerta-titulo" placeholder="Ej. Mantenimiento programado" required>
+                  <label>Mensaje</label>
+                  <textarea id="alerta-mensaje" rows="3" placeholder="Describe brevemente qué está pasando" required></textarea>
+                  <button type="submit" class="boton-guardar" style="max-width:220px">Publicar alerta</button>
+              </form>
+          </div>
+          <div class="tarjeta-panel">
+              <h3><i class="fa-solid fa-triangle-exclamation"></i>Alertas del sistema</h3>
+              <div id="lista-alertas"><p class="sin-citas">Cargando...</p></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: BUSCAR NEGOCIOS (cliente) ============ -->
+      <section id="seccion-buscar" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>🔍 Barberías y Salones</h3>
+              <div class="campo-busqueda-wrap"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="input-buscar-negocio" class="campo-busqueda" placeholder="Buscar por nombre..."></div>
+              <div id="lista-negocios" class="grid-negocios"></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: FAVORITOS (cliente) ============ -->
+      <section id="seccion-favoritos" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>❤️ Mis negocios favoritos</h3>
+              <div id="lista-favoritos" class="grid-negocios"></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: MIS CITAS (cliente) ============ -->
+      <section id="seccion-miscitas" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>📖 Historial de citas</h3>
+              <p class="nota-info">Mostramos las citas registradas con tu número de teléfono. Si aún no ves tus citas, confirma que el negocio las registró con el mismo teléfono de tu perfil.</p>
+              <div id="lista-mis-citas"><p class="sin-citas">Cargando...</p></div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: ABOUT (todos) ============ -->
+      <section id="seccion-about" class="seccion-dashboard oculto">
+          <div class="tarjeta-panel">
+              <h3>ℹ️ About — BeautifyX</h3>
+              <div class="grid-about">
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-spa"></i></div>
+                      <h4>BeautifyX</h4>
+                      <p>Plataforma de gestión de citas para clientes, barberías y salones de belleza.</p>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-code-branch"></i></div>
+                      <h4>Versión</h4>
+                      <p>v1.1.0 — Julio 2026</p>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-graduation-cap"></i></div>
+                      <h4>Proyecto</h4>
+                      <p>Proyecto Final — Algoritmos Computacionales</p>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-user-group"></i></div>
+                      <h4>Equipo</h4>
+                      <ul class="lista-equipo">
+                          <li><strong>Daireliz Delgado</strong>Desarrolladora Web / Administradora del Sistema</li>
+                          <li><strong>Arianny Nachali Díaz García</strong>Diseñadora UX/UI / Supervisora de Diseño</li>
+                      </ul>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-globe"></i></div>
+                      <h4>Tecnologías</h4>
+                      <div class="chips-tecnologias">
+                          <span class="chip">HTML5</span>
+                          <span class="chip">CSS3</span>
+                          <span class="chip">JavaScript</span>
+                          <span class="chip">Firebase</span>
+                          <span class="chip">Netlify</span>
+                          <span class="chip">GitHub</span>
+                      </div>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-lock"></i></div>
+                      <h4>Seguridad</h4>
+                      <p>Autenticación por usuario y contraseña. Datos almacenados en Firebase con cifrado SSL.</p>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-list-check"></i></div>
+                      <h4>Funcionalidades</h4>
+                      <p>Login · Dashboard · Citas · Personal · Servicios · Perfil · Favoritos · Reportes · Alertas</p>
+                  </div>
+                  <div class="tarjeta-about">
+                      <div class="icono-about"><i class="fa-solid fa-link"></i></div>
+                      <h4>Acceso</h4>
+                      <div class="caja-enlace">
+                          <a id="enlace-app" href="#" target="_blank">Pendiente de agregar</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- ============ SECCIÓN: CONFIGURACIÓN (perfil + negocio) ============ -->
+      <section id="seccion-configuracion" class="seccion-dashboard oculto">
+
+          <div class="tarjeta-panel tarjeta-perfil">
+              <div class="avatar avatar-grande" id="avatar-perfil">?</div>
+              <div class="datos-perfil">
+                  <h3 id="perfil-nombre">—</h3>
+                  <p id="perfil-correo">—</p>
+                  <span class="badge-tipo" id="perfil-tipo">—</span>
+              </div>
+          </div>
+
+          <div class="tarjeta-panel">
+              <h3>Información de la cuenta</h3>
+              <p><strong>Correo electrónico:</strong> <span id="detalle-correo">—</span></p>
+              <p><strong>Teléfono:</strong> <span id="detalle-telefono">—</span></p>
+              <p><strong>Tipo de cuenta:</strong> <span id="detalle-tipo">—</span></p>
+              <p><strong>Fecha de registro:</strong> <span id="detalle-fecha">—</span></p>
+              <p id="detalle-negocio-wrap" class="oculto"><strong>Negocio:</strong> <span id="detalle-negocio">—</span></p>
+          </div>
+
+          <div class="tarjeta-panel">
+              <h3>Editar perfil</h3>
+              <form id="form-perfil" class="formulario-perfil">
+                  <label>Nombre completo</label>
+                  <input type="text" id="editar-nombre">
+                  <label>Teléfono</label>
+                  <input type="text" id="editar-telefono">
+                  <button type="submit" class="boton-guardar" style="max-width:260px">Guardar cambios</button>
+              </form>
+          </div>
+
+          <div class="tarjeta-panel" id="tarjeta-info-negocio">
+              <h3>🏪 Información del negocio</h3>
+              <form id="form-negocio" class="formulario-perfil">
+                  <label>Nombre del negocio</label>
+                  <input type="text" id="negocio-nombre" placeholder="Ej. Barbería Estilo Urbano">
+                  <label>Dirección</label>
+                  <input type="text" id="negocio-direccion" placeholder="Ej. Av. 27 de Febrero, Santo Domingo">
+                  <label>Horario de atención</label>
+                  <input type="text" id="negocio-horario" placeholder="Ej. Lun-Sáb 9:00am - 7:00pm">
+                  <button type="submit" class="boton-guardar" style="max-width:260px">Guardar información</button>
+              </form>
+          </div>
+
+          <div class="tarjeta-panel">
+              <button class="boton-cerrar-sesion-grande" id="btnCerrarSesion2">Cerrar sesión</button>
+          </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============ MODAL DE CITAS (negocio) ============ -->
+<div id="modal-cita" class="modal-oculto">
+    <div class="modal-contenido">
+        <span id="cerrar-modal" class="boton-cerrar">&times;</span>
+        <h3 id="titulo-modal-cita">✨ Agendar Nueva Cita</h3>
+
+        <form id="formulario-cita">
+            <label for="nombre-cliente">Cliente — Nombre</label>
+            <input type="text" id="nombre-cliente" required>
+
+            <label for="telefono-cliente">Cliente — Teléfono (WhatsApp)</label>
+            <input type="tel" id="telefono-cliente" required>
+
+            <label for="servicio">Servicio:</label>
+            <select id="servicio" required>
+                <option value="">Seleccione un servicio</option>
+            </select>
+
+            <label for="fecha-cita-modal">Fecha</label>
+            <input type="date" id="fecha-cita-modal" required>
+
+            <label for="hora-cita-modal">Hora</label>
+            <input type="time" id="hora-cita-modal" required>
+
+            <div class="nota-info" style="margin-top:10px">
+                <div>⏱️ Duración: <strong id="duracion-servicio-texto">—</strong></div>
+                <div>🕐 Horario de la cita: <strong id="hora-fin-texto">—</strong></div>
+            </div>
+
+            <label for="precio-servicio">Precio (automático):</label>
+            <input type="text" id="precio-servicio" readonly>
+
+            <label for="seleccionar-empleado">Profesional (solo se muestran los disponibles)</label>
+            <select id="seleccionar-empleado" required>
+                <option value="">Seleccione</option>
+            </select>
+
+            <label for="estado-cita">Estado de la cita:</label>
+            <select id="estado-cita">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Confirmada">Confirmada</option>
+                <option value="En proceso">En proceso</option>
+                <option value="Finalizada">Finalizada</option>
+                <option value="Cancelada">Cancelada</option>
+            </select>
+
+            <label for="metodo-pago">Método de pago:</label>
+            <select id="metodo-pago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta">Tarjeta</option>
+            </select>
+
+            <label for="notas">Observaciones:</label>
+            <textarea id="notas" rows="3" placeholder="Información adicional"></textarea>
+
+            <button class="boton-guardar" id="btnGuardarCita" type="submit">Confirmar Cita</button>
+        </form>
+    </div>
+</div>
+
+<!-- ============ MODAL DE PERSONAL (negocio) ============ -->
+<div id="modal-personal" class="modal-oculto">
+    <div class="modal-contenido">
+        <span id="cerrar-modal-personal" class="boton-cerrar">&times;</span>
+        <h3 id="titulo-modal-personal">➕ Agregar Personal</h3>
+
+        <form id="form-personal">
+            <label for="personal-nombre">Nombre completo</label>
+            <input type="text" id="personal-nombre" required>
+
+            <label for="personal-telefono">Número de teléfono</label>
+            <input type="tel" id="personal-telefono">
+
+            <label for="personal-correo">Correo electrónico</label>
+            <input type="email" id="personal-correo">
+
+            <label for="personal-sexo">Sexo</label>
+            <select id="personal-sexo">
+                <option value="">Seleccione</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Otro">Otro</option>
+            </select>
+
+            <label for="personal-tipo-negocio">Tipo de negocio</label>
+            <select id="personal-tipo-negocio">
+                <option value="barberia">💈 Barbería</option>
+                <option value="salon">💇 Salón de Belleza</option>
+                <option value="spa">🌿 Spa</option>
+            </select>
+
+            <label for="personal-tipo-personal">Tipo de personal</label>
+            <select id="personal-tipo-personal"></select>
+
+            <label for="personal-especialidad">Especialidad</label>
+            <input type="text" id="personal-especialidad" placeholder="Ej. Cortes degradados, balayage, masajes relajantes...">
+
+            <label>Horario de trabajo</label>
+            <div style="display:flex; gap:10px">
+                <input type="time" id="personal-horario-inicio">
+                <input type="time" id="personal-horario-fin">
+            </div>
+
+            <label>Días laborables</label>
+            <div id="personal-dias-laborables" class="grupo-chips"></div>
+
+            <label for="personal-estado">Estado</label>
+            <select id="personal-estado">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+
+            <label for="personal-foto">Fotografía de perfil</label>
+            <input type="file" id="personal-foto" accept="image/*">
+            <img id="personal-foto-preview" class="foto-preview oculto" alt="Vista previa">
+
+            <label for="personal-observaciones">Observaciones</label>
+            <textarea id="personal-observaciones" rows="3" placeholder="Notas internas sobre este profesional"></textarea>
+
+            <button class="boton-guardar" type="submit">Guardar Personal</button>
+        </form>
+    </div>
+</div>
+
+<!-- ============ MODAL DE SERVICIOS (negocio) ============ -->
+<div id="modal-servicio" class="modal-oculto">
+    <div class="modal-contenido">
+        <span id="cerrar-modal-servicio" class="boton-cerrar">&times;</span>
+        <h3 id="titulo-modal-servicio">➕ Agregar Servicio</h3>
+
+        <form id="form-servicio">
+            <label for="servicio-nombre">Nombre del servicio</label>
+            <input type="text" id="servicio-nombre" required>
+
+            <label for="servicio-categoria">Categoría</label>
+            <input type="text" id="servicio-categoria" placeholder="Ej. Cortes, Color, Uñas, Faciales...">
+
+            <label for="servicio-precio">Precio (RD$)</label>
+            <input type="number" id="servicio-precio" min="0" step="0.01" required>
+
+            <label for="servicio-duracion">Duración (minutos)</label>
+            <input type="number" id="servicio-duracion" min="5" step="5" value="30" required>
+
+            <label for="servicio-descripcion">Descripción</label>
+            <textarea id="servicio-descripcion" rows="3" placeholder="Describe brevemente en qué consiste el servicio"></textarea>
+
+            <label>Personal que puede realizar este servicio</label>
+            <div id="servicio-personal-lista" class="grupo-chips"></div>
+
+            <label for="servicio-estado">Estado</label>
+            <select id="servicio-estado">
+                <option value="disponible">Disponible</option>
+                <option value="no_disponible">No disponible</option>
+            </select>
+
+            <button class="boton-guardar" type="submit">Guardar Servicio</button>
+        </form>
+    </div>
+</div>
+
+<!-- ============ MODAL: PERFIL DEL PROFESIONAL (ver detalle de Personal) ============ -->
+<div id="modal-ver-personal" class="modal-oculto">
+    <div class="modal-contenido modal-perfil">
+        <div class="cabecera-perfil-modal">
+            <h3>Perfil del Profesional</h3>
+            <span id="cerrar-modal-ver-personal" class="boton-cerrar-perfil">&times;</span>
+        </div>
+        <div id="contenido-perfil-personal"></div>
+    </div>
+</div>
+
+<!-- SDK de Firebase -->
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

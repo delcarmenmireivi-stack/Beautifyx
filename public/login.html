@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | BeautifyX</title>
+
+    <link rel="icon" href="favicon.ico">
+    <!-- Vinculamos el mismo archivo CSS para heredar los estilos globales -->
+    <link rel="stylesheet" href="estilos-index.css?v=3" type="text/css">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .mensaje-error-login {
+            display: none;
+            font-size: .85rem;
+            color: #b02a2a;
+            background: #fdeaea;
+            border: 1px solid #f3c6c6;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+        }
+        .mensaje-error-login.visible { display: block; }
+
+        .mensaje-exito-login {
+            display: none;
+            font-size: .85rem;
+            color: #1f7a4d;
+            background: #e6f7ee;
+            border: 1px solid #b9e6cd;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 18px;
+        }
+        .mensaje-exito-login.visible { display: block; }
+
+        .btn-block:disabled { opacity: .7; cursor: not-allowed; }
+
+        /* --- Botón "ver/ocultar contraseña" --- */
+        /* position:relative puesto directo en .campo-password-wrap (una sola
+           clase) para que el botón del ojo SIEMPRE se posicione respecto a
+           esta caja y no respecto a un contenedor más grande. */
+        .campo-password-wrap {
+            position: relative !important;
+        }
+        .campo-password-wrap input {
+            padding-right: 44px !important;
+        }
+
+        /* Ícono izquierdo (candado / sobre): centrado vertical explícito */
+        .input-icono i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .boton-ver-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #8b7377;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color .18s;
+            z-index: 2;
+        }
+        .boton-ver-password svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            stroke: currentColor;
+        }
+        .boton-ver-password:hover, .boton-ver-password:focus-visible { color: #E8546F; outline: none; }
+
+        .olvido-password[aria-busy="true"] { opacity: .6; pointer-events: none; }
+    </style>
+</head>
+<body class="body-login">
+
+    <!-- Contenedor principal del formulario -->
+    <div class="contenedor-login">
+
+        <!-- Flecha para regresar al inicio -->
+        <a href="index.html" class="btn-regresar">
+            <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+        </a>
+
+        <!-- Encabezado del Login -->
+        <div class="login-header">
+            <h2>Beautify<span>X</span></h2>
+            <p>Simplifica tu gestión, eleva tu estilo</p>
+            <h3>¡Bienvenido de nuevo!</h3>
+        </div>
+
+        <div class="mensaje-error-login" id="mensajeErrorLogin"></div>
+        <div class="mensaje-exito-login" id="mensajeExitoLogin"></div>
+
+        <!-- Formulario -->
+        <form class="formulario-login" id="formularioLogin" novalidate>
+
+            <!-- Campo: Correo Electrónico -->
+            <div class="grupo-input">
+                <label for="email">Correo electrónico</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="email" placeholder="ejemplo@correo.com" required autocomplete="email">
+                </div>
+            </div>
+
+            <!-- Campo: Contraseña -->
+            <div class="grupo-input">
+                <div class="wrapper-label">
+                    <label for="password">Contraseña</label>
+                    <a href="#" class="olvido-password" id="olvidoPassword">¿La olvidaste?</a>
+                </div>
+                <div class="input-icono campo-password-wrap">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="Ingresa tu contraseña" required autocomplete="current-password">
+                    <button type="button" class="boton-ver-password" id="btnVerPassword" aria-label="Mostrar contraseña" tabindex="-1">
+                        <svg id="iconoVerPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <button type="submit" class="btn-principal btn-block" id="btnIniciarSesion">
+                Iniciar sesión
+            </button>
+
+        </form>
+
+        <!-- Enlace a Registro -->
+        <div class="login-footer">
+            <p>¿Aún no tienes una cuenta? <a href="registro.html">Regístrate aquí</a></p>
+        </div>
+
+    </div>
+
+    <!-- 1. SDK DE FIREBASE (COMPAT DEBE IR PRIMERO) -->
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+
+    <!-- 2. CONFIGURACIÓN GLOBAL DE FIREBASE -->
+    <script src="firebase-config.js"></script>
+
+    <!-- 3. CONTROLADORES Y LÓGICA DE NEGOCIO -->
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+
+    <!-- 4. LÓGICA ESPECÍFICA DEL FORMULARIO DE INICIO DE SESIÓN -->
+    <script>
+        const formularioLogin = document.getElementById('formularioLogin');
+        const btnIniciarSesion = document.getElementById('btnIniciarSesion');
+        const mensajeErrorLogin = document.getElementById('mensajeErrorLogin');
+        const mensajeExitoLogin = document.getElementById('mensajeExitoLogin');
+
+        function mostrarErrorLogin(texto) {
+            ocultarExitoLogin();
+            mensajeErrorLogin.textContent = texto;
+            mensajeErrorLogin.classList.add('visible');
+        }
+        function ocultarErrorLogin() {
+            mensajeErrorLogin.classList.remove('visible');
+        }
+        function mostrarExitoLogin(texto) {
+            ocultarErrorLogin();
+            mensajeExitoLogin.textContent = texto;
+            mensajeExitoLogin.classList.add('visible');
+        }
+        function ocultarExitoLogin() {
+            mensajeExitoLogin.classList.remove('visible');
+        }
+
+        formularioLogin.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            ocultarErrorLogin();
+            ocultarExitoLogin();
+
+            const correo = document.getElementById('email').value.trim();
+            const pass = document.getElementById('password').value;
+
+            if (!correo || !pass) {
+                mostrarErrorLogin('Por favor completa correo y contraseña.');
+                return;
+            }
+
+            btnIniciarSesion.disabled = true;
+            btnIniciarSesion.textContent = 'Iniciando sesión...';
+
+            try {
+                const usuario = await iniciarSesion(correo, pass);
+                const datos = await obtenerDatosUsuario(usuario.uid);
+
+                if (datos && datos.estado === 'bloqueado') {
+                    await cerrarSesion();
+                    mostrarErrorLogin('Tu cuenta ha sido suspendida. Contacta al administrador de BeautifyX.');
+                    return;
+                }
+
+                // Redirección al Dashboard único multi-rol
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                if (typeof traducirErrorFirebase === 'function') {
+                    mostrarErrorLogin(traducirErrorFirebase(error.code));
+                } else {
+                    mostrarErrorLogin('Error al autenticar: ' + error.message);
+                }
+            } finally {
+                btnIniciarSesion.disabled = false;
+                btnIniciarSesion.textContent = 'Iniciar sesión';
+            }
+        });
+
+        // --- Mostrar / ocultar contraseña ---
+        const ICONO_OJO_ABIERTO = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+        const ICONO_OJO_TACHADO = `<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.29 20.29 0 0 1 5.06-6.06"/><path d="M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.28 20.28 0 0 1-3.22 4.44"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+        const btnVerPassword = document.getElementById('btnVerPassword');
+        const inputPassword = document.getElementById('password');
+        const iconoVerPassword = document.getElementById('iconoVerPassword');
+        if (btnVerPassword && inputPassword && iconoVerPassword) {
+            btnVerPassword.addEventListener('click', () => {
+                const seVaAMostrar = inputPassword.type === 'password';
+                inputPassword.type = seVaAMostrar ? 'text' : 'password';
+                iconoVerPassword.innerHTML = seVaAMostrar ? ICONO_OJO_TACHADO : ICONO_OJO_ABIERTO;
+                btnVerPassword.setAttribute('aria-label', seVaAMostrar ? 'Ocultar contraseña' : 'Mostrar contraseña');
+                inputPassword.focus({ preventScroll: true });
+            });
+        }
+
+        // --- Recuperación de contraseña vía correo (Firebase Auth) ---
+        // Envía el enlace de restablecimiento AL CORREO QUE YA ESTÁ REGISTRADO en Firebase
+        // Authentication, siempre que coincida con el que la persona escribió arriba.
+        const olvidoPassword = document.getElementById('olvidoPassword');
+        olvidoPassword.addEventListener('click', async function (e) {
+            e.preventDefault();
+            ocultarErrorLogin();
+            ocultarExitoLogin();
+
+            const correo = document.getElementById('email').value.trim();
+            if (!correo) {
+                mostrarErrorLogin('Escribe tu correo electrónico registrado arriba y luego pulsa "¿La olvidaste?" de nuevo.');
+                document.getElementById('email').focus();
+                return;
+            }
+
+            olvidoPassword.setAttribute('aria-busy', 'true');
+            const textoOriginal = olvidoPassword.textContent;
+            olvidoPassword.textContent = 'Enviando...';
+
+            try {
+                await auth.sendPasswordResetEmail(correo);
+                mostrarExitoLogin(`✅ Te enviamos un correo a ${correo} con instrucciones para restablecer tu contraseña. Revisa también tu carpeta de spam.`);
+            } catch (error) {
+                console.error('Error al enviar correo de recuperación:', error);
+                if (typeof traducirErrorFirebase === 'function') {
+                    mostrarErrorLogin(traducirErrorFirebase(error.code));
+                } else {
+                    mostrarErrorLogin('No se pudo enviar el correo de recuperación. Intenta de nuevo.');
+                }
+            } finally {
+                olvidoPassword.removeAttribute('aria-busy');
+                olvidoPassword.textContent = textoOriginal;
+            }
+        });
+    </script>
+
+</body>
+</html>

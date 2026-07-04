@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautifyX | Crear cuenta</title>
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --principal: #D46A6A;
+            --secundario: #E8A7A1;
+            --fondo: #FFF6F5;
+            --blanco: #ffffff;
+            --texto: #4A3E3D;
+            --gris: #777777;
+            --radio: 15px;
+            --transicion: .3s;
+            --principal-rgb: 212, 106, 106;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--fondo);
+            color: var(--texto);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ---- HEADER ---- */
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: var(--blanco);
+            box-shadow: 0 4px 20px rgba(0,0,0,.06);
+        }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo img { width: 48px; height: 48px; }
+        .logo h2 { font-size: 1.75rem; color: var(--principal); margin: 0; }
+        .logo h2 span { color: #222; }
+        .btn-login-header {
+            padding: 10px 22px;
+            border: 2px solid var(--principal);
+            border-radius: 30px;
+            color: var(--principal);
+            font-weight: bold;
+            font-size: .9rem;
+            transition: background var(--transicion), color var(--transicion), transform var(--transicion);
+        }
+        .btn-login-header:hover {
+            background: var(--principal);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* ---- MAIN ---- */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 8%;
+        }
+
+        /* ---- TARJETA ---- */
+        .card-registro {
+            background: var(--blanco);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.09);
+            width: 100%;
+            max-width: 520px;
+            padding: 48px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Franja decorativa superior */
+        .card-registro::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--principal), var(--secundario), var(--principal));
+        }
+
+        .card-titulo {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .card-titulo h1 {
+            font-size: 1.75rem;
+            color: var(--texto);
+            font-weight: 700;
+        }
+        .card-titulo p {
+            font-size: .95rem;
+            color: var(--gris);
+            margin-top: 6px;
+        }
+
+        /* ---- FORMULARIO ---- */
+        .form-registro {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .campo label {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--texto);
+        }
+        .input-icono {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-icono i {
+            position: absolute;
+            left: 14px;
+            color: #bbb;
+            font-size: 15px;
+            pointer-events: none;
+            transition: color var(--transicion);
+        }
+        .input-icono input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border: 1.5px solid #e5dede;
+            border-radius: 10px;
+            font-size: .95rem;
+            color: var(--texto);
+            background: var(--fondo);
+            transition: border-color var(--transicion), box-shadow var(--transicion);
+            outline: none;
+        }
+        .input-icono input:focus {
+            border-color: var(--principal);
+            box-shadow: 0 0 0 3px rgba(var(--principal-rgb), .12);
+        }
+        .input-icono input:focus + i,
+        .input-icono:focus-within i {
+            color: var(--principal);
+        }
+        /* Ojo contraseña */
+        .ojo {
+            position: absolute;
+            right: 14px;
+            left: auto;
+            cursor: pointer;
+            pointer-events: all;
+        }
+        .input-icono input.con-ojo { padding-right: 40px; }
+
+        /* ---- TIPO DE CUENTA ---- */
+        .campo-tipo label.label-tipo {
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--texto);
+            margin-bottom: 2px;
+        }
+        .opciones-tipo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .opcion-tipo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1.5px solid #e5dede;
+            border-radius: 10px;
+            cursor: pointer;
+            background: var(--fondo);
+            transition: border-color var(--transicion), background var(--transicion);
+        }
+        .opcion-tipo:hover { border-color: var(--secundario); }
+        .opcion-tipo.seleccionada {
+            border-color: var(--principal);
+            background: #fff0f0;
+        }
+        .opcion-tipo input[type="radio"] { display: none; }
+        .opcion-icono {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--blanco);
+            border: 1.5px solid #e5dede;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: border-color var(--transicion), background var(--transicion);
+        }
+        .opcion-tipo.seleccionada .opcion-icono {
+            border-color: var(--principal);
+            background: var(--principal);
+            color: #fff;
+        }
+        .opcion-info strong {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--texto);
+            display: block;
+        }
+        .opcion-info span {
+            font-size: .78rem;
+            color: var(--gris);
+        }
+
+        /* ---- TÉRMINOS ---- */
+        .campo-terminos {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .campo-terminos input[type="checkbox"] {
+            width: 17px; height: 17px;
+            accent-color: var(--principal);
+            flex-shrink: 0;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        .campo-terminos label {
+            font-size: .85rem;
+            color: var(--gris);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+        .campo-terminos label a {
+            color: var(--principal);
+            font-weight: 600;
+        }
+        .campo-terminos label a:hover { text-decoration: underline; }
+
+        /* ---- BOTÓN ---- */
+        .btn-crear {
+            width: 100%;
+            padding: 14px;
+            background: var(--principal);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background var(--transicion), transform var(--transicion), box-shadow var(--transicion);
+            margin-top: 4px;
+        }
+        .btn-crear:hover {
+            background: #bc5757;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(var(--principal-rgb), .3);
+        }
+        .btn-crear:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ---- DIVISOR ---- */
+        .divisor {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 4px 0;
+            color: #ccc;
+            font-size: .8rem;
+        }
+        .divisor::before, .divisor::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5dede;
+        }
+
+        /* ---- LINK LOGIN ---- */
+        .link-login {
+            text-align: center;
+            font-size: .88rem;
+            color: var(--gris);
+        }
+        .link-login a {
+            color: var(--principal);
+            font-weight: 700;
+        }
+        .link-login a:hover { text-decoration: underline; }
+
+        /* ---- MENSAJE DE ERROR ---- */
+        .mensaje-error-registro {
+            display: none;
+            font-size: .85rem;
+            color: #b02a2a;
+            background: #fdeaea;
+            border: 1px solid #f3c6c6;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-top: 18px;
+        }
+        .mensaje-error-registro.visible { display: block; }
+
+        /* ---- FOOTER ---- */
+        .footer-mini {
+            text-align: center;
+            padding: 20px;
+            font-size: .78rem;
+            color: #bbb;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 560px) {
+            .card-registro { padding: 36px 24px; }
+            .main { padding: 24px 4%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <a href="index.html" class="logo">
+        <img src="favicon.ico" alt="BeautifyX">
+        <h2>Beautify<span>X</span></h2>
+    </a>
+    <a href="login.html" class="btn-login-header">Iniciar sesión</a>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+    <div class="card-registro">
+
+        <div class="card-titulo">
+            <h1>Crear una cuenta</h1>
+            <p>Bienvenido a BeautifyX</p>
+        </div>
+
+        <form class="form-registro" id="formRegistro" novalidate>
+
+            <!-- Nombre -->
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej. María González" required autocomplete="name">
+                </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" required autocomplete="email">
+                </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="telefono" name="telefono" placeholder="809-555-0000" required autocomplete="tel">
+                </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" class="con-ojo" required autocomplete="new-password">
+                    <i class="fa-solid fa-eye ojo" id="verPassword" title="Mostrar contraseña" aria-label="Mostrar contraseña"></i>
+                </div>
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="campo">
+                <label for="confirmar">Confirmar contraseña</label>
+                <div class="input-icono">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="confirmar" name="confirmar" placeholder="Repite tu contraseña" class="con-ojo" required autocomplete="new-password">
+                    <i class="fa-solid fa-eye ojo" id="verConfirmar" title="Mostrar contraseña" aria-label="Mostrar contraseña"></i>
+                </div>
+            </div>
+
+            <!-- Tipo de cuenta -->
+            <div class="campo campo-tipo">
+                <label class="label-tipo">¿Qué tipo de cuenta deseas?</label>
+                <div class="opciones-tipo" role="radiogroup" aria-label="Tipo de cuenta">
+
+                    <label class="opcion-tipo seleccionada" id="lbl-cliente">
+                        <input type="radio" name="tipo" value="cliente" checked>
+                        <div class="opcion-icono"><i class="fa-solid fa-user"></i></div>
+                        <div class="opcion-info">
+                            <strong>Cliente</strong>
+                            <span>Reserva citas en tus lugares favoritos</span>
+                        </div>
+                    </label>
+
+                    <label class="opcion-tipo" id="lbl-barberia">
+                        <input type="radio" name="tipo" value="barberia">
+                        <div class="opcion-icono"><i class="fa-solid fa-scissors"></i></div>
+                        <div class="opcion-info">
+                            <strong>Barbería</strong>
+                            <span>Gestiona tu agenda y clientes</span>
+                        </div>
+                    </label>
+
+                    <label class="opcion-tipo" id="lbl-salon">
+                        <input type="radio" name="tipo" value="salon">
+                        <div class="opcion-icono"><i class="fa-solid fa-spa"></i></div>
+                        <div class="opcion-info">
+                            <strong>Salón de belleza</strong>
+                            <span>Administra servicios y reservas</span>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+
+            <!-- Términos -->
+            <div class="campo-terminos">
+                <input type="checkbox" id="terminos" name="terminos" required>
+                <label for="terminos">
+                    Acepto los <a href="#">términos y condiciones</a> y la <a href="#">política de privacidad</a>
+                </label>
+            </div>
+
+            <!-- Botón -->
+            <button type="submit" class="btn-crear">Crear cuenta</button>
+
+            <div class="mensaje-error-registro" id="mensajeErrorRegistro"></div>
+
+            <div class="divisor">o</div>
+
+            <p class="link-login">¿Ya tienes una cuenta? <a href="login.html">Iniciar sesión</a></p>
+
+        </form>
+    </div>
+</main>
+
+<footer class="footer-mini">
+    © 2026 BeautifyX. Todos los derechos reservados.
+</footer>
+
+<!-- 1. SDK DE FIREBASE (COMPAT DEBE IR PRIMERO) -->
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore-compat.js"></script>
+
+<!-- 2. CONFIGURACIÓN GLOBAL DE FIREBASE -->
+<script src="firebase-config.js"></script>
+
+<!-- 3. LÓGICA DE AUTENTICACIÓN Y ROLES COMPARTIDA -->
+<script src="auth.js"></script>
+
+<script>
+    // Selección visual de tipo de cuenta
+    const opciones = document.querySelectorAll('.opcion-tipo');
+    opciones.forEach(op => {
+        op.addEventListener('click', () => {
+            opciones.forEach(o => o.classList.remove('seleccionada'));
+            op.classList.add('seleccionada');
+            op.querySelector('input[type="radio"]').checked = true;
+        });
+    });
+
+    // Mostrar / ocultar contraseña
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon  = document.getElementById(iconId);
+        icon.addEventListener('click', () => {
+            const visible = input.type === 'text';
+            input.type = visible ? 'password' : 'text';
+            icon.classList.toggle('fa-eye', visible);
+            icon.classList.toggle('fa-eye-slash', !visible);
+        });
+    }
+    togglePassword('password', 'verPassword');
+    togglePassword('confirmar', 'verConfirmar');
+
+    // Mensajes de error
+    const mensajeErrorRegistro = document.getElementById('mensajeErrorRegistro');
+    function mostrarErrorRegistro(texto) {
+        mensajeErrorRegistro.textContent = texto;
+        mensajeErrorRegistro.classList.add('visible');
+    }
+    function ocultarErrorRegistro() {
+        mensajeErrorRegistro.classList.remove('visible');
+    }
+
+    // Envío del formulario: ahora sí crea la cuenta en Firebase Auth + Firestore
+    const formRegistro = document.getElementById('formRegistro');
+    const btnCrear = formRegistro.querySelector('.btn-crear');
+
+    formRegistro.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        ocultarErrorRegistro();
+
+        const nombre   = document.getElementById('nombre').value.trim();
+        const correo   = document.getElementById('correo').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const pass     = document.getElementById('password').value;
+        const confirma = document.getElementById('confirmar').value;
+        const terminos = document.getElementById('terminos').checked;
+        const tipoInput = document.querySelector('input[name="tipo"]:checked');
+        const tipo = tipoInput ? tipoInput.value : 'cliente';
+
+        if (!nombre || !correo || !telefono || !pass || !confirma) {
+            mostrarErrorRegistro('Por favor completa todos los campos.');
+            return;
+        }
+        if (pass.length < 8) {
+            mostrarErrorRegistro('La contraseña debe tener al menos 8 caracteres.');
+            return;
+        }
+        if (pass !== confirma) {
+            mostrarErrorRegistro('Las contraseñas no coinciden.');
+            return;
+        }
+        if (!terminos) {
+            mostrarErrorRegistro('Debes aceptar los términos y condiciones.');
+            return;
+        }
+
+        btnCrear.disabled = true;
+        btnCrear.textContent = 'Creando cuenta...';
+
+        try {
+            await registrarUsuario({ nombre, correo, telefono, password: pass, tipo });
+
+            // Las cuentas de negocio (barbería/salón) quedan "pendientes" de
+            // aprobación por un administrador; igual pueden entrar al dashboard,
+            // donde verán el aviso correspondiente.
+            window.location.href = 'dashboard.html';
+
+        } catch (error) {
+            console.error('Error al registrar usuario:', error);
+            if (typeof traducirErrorFirebase === 'function') {
+                mostrarErrorRegistro(traducirErrorFirebase(error.code));
+            } else {
+                mostrarErrorRegistro('Error al crear la cuenta: ' + error.message);
+            }
+            btnCrear.disabled = false;
+            btnCrear.textContent = 'Crear cuenta';
+        }
+    });
+</script>
+
+</body>
+</html>
