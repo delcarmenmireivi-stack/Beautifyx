@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beautifyx | Panel de Control</title>
 
-    <link rel="stylesheet" href="estilos.css?v=5">
+    <link rel="stylesheet" href="estilos.css?v=6">
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
@@ -426,64 +426,133 @@
           </div>
       </section>
 
-      <!-- ============ SECCIÓN: ABOUT (todos) ============ -->
+      <!-- ============ SECCIÓN: ABOUT (todos) — DISEÑO ACTUALIZADO ============ -->
       <section id="seccion-about" class="seccion-dashboard oculto">
-          <div class="tarjeta-panel">
-              <h3>ℹ️ About — BeautifyX</h3>
-              <div class="grid-about">
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-spa"></i></div>
-                      <h4>BeautifyX</h4>
-                      <p>Plataforma de gestión de citas para clientes, barberías y salones de belleza.</p>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-code-branch"></i></div>
-                      <h4>Versión</h4>
-                      <p>v1.1.0 — Mayo 2026</p>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-graduation-cap"></i></div>
-                      <h4>Proyecto</h4>
-                      <p>Proyecto Final — Algoritmos Computacionales</p>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-user-group"></i></div>
-                      <h4>Equipo</h4>
-                      <ul class="lista-equipo">
-                          <li><strong>Daireliz Delgado</strong>Desarrolladora Web / Administradora del Sistema</li>
-                          <li><strong>Arianny Nachali Díaz García</strong>Diseñadora UX/UI / Supervisora de Diseño</li>
-                      </ul>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-globe"></i></div>
-                      <h4>Tecnologías</h4>
-                      <div class="chips-tecnologias">
-                          <span class="chip">HTML5</span>
-                          <span class="chip">CSS3</span>
-                          <span class="chip">JavaScript</span>
-                          <span class="chip">Firebase</span>
-                          <span class="chip">Netlify</span>
-                          <span class="chip">GitHub</span>
-                      </div>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-lock"></i></div>
-                      <h4>Seguridad</h4>
-                      <p>Autenticación por usuario y contraseña. Datos almacenados en Firebase con cifrado SSL.</p>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-list-check"></i></div>
-                      <h4>Funcionalidades</h4>
-                      <p>Login · Dashboard · Citas · Personal · Servicios · Perfil · Favoritos · Reportes · Alertas</p>
-                  </div>
-                  <div class="tarjeta-about">
-                      <div class="icono-about"><i class="fa-solid fa-link"></i></div>
-                      <h4>Acceso</h4>
-                      <div class="caja-enlace">
-                          <a id="enlace-app" href="#" target="_blank">https://beautifyx.netlify.app/</a>
-                      </div>
+
+          <!-- Cabecera -->
+          <div class="tarjeta-panel tarjeta-about-header">
+              <div class="cabecera-about-header">
+                  <div class="icono-about-header"><i class="fa-solid fa-spa"></i></div>
+                  <div>
+                      <h2>About — <span class="resaltado-about">BeautifyX</span></h2>
+                      <p>Conoce más sobre nuestra plataforma, el equipo que la hace posible y las tecnologías que utilizamos.</p>
                   </div>
               </div>
+              <div class="logo-about-header">
+                  <img src="favicon.ico" alt="BeautifyX">
+                  <span>BeautifyX</span>
+              </div>
+          </div>
+
+          <!-- Fila 1 y 2: BeautifyX / Versión / Proyecto / Equipo / Tecnologías / Seguridad / Funcionalidades / Objetivo -->
+          <div class="grid-about">
+
+              <div class="tarjeta-about">
+                  <div class="icono-about"><i class="fa-solid fa-spa"></i></div>
+                  <h4>BeautifyX</h4>
+                  <p>Plataforma de gestión de citas para clientes, barberías y salones de belleza.</p>
+                  <div class="ilustracion-about">
+                      <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <ellipse cx="100" cy="108" rx="80" ry="8" fill="#F3A6B4" opacity="0.35"></ellipse>
+                          <rect x="55" y="40" width="90" height="55" rx="8" fill="#fff"></rect>
+                          <rect x="55" y="40" width="90" height="14" rx="7" fill="#F3A6B4"></rect>
+                          <circle cx="100" cy="30" r="20" fill="#fff" stroke="#F3A6B4" stroke-width="4"></circle>
+                          <circle cx="100" cy="30" r="9" fill="#F3A6B4"></circle>
+                          <rect x="35" y="95" width="10" height="18" rx="2" fill="#E8546F"></rect>
+                          <rect x="155" y="95" width="10" height="18" rx="2" fill="#E8546F"></rect>
+                          <circle cx="72" cy="65" r="6" fill="#E8546F" opacity="0.7"></circle>
+                          <circle cx="90" cy="65" r="6" fill="#F2A93B" opacity="0.7"></circle>
+                          <circle cx="108" cy="65" r="6" fill="#3FB68B" opacity="0.7"></circle>
+                      </svg>
+                  </div>
+              </div>
+
+              <div class="tarjeta-about">
+                  <div class="icono-about"><i class="fa-solid fa-code-branch"></i></div>
+                  <h4>Versión</h4>
+                  <p class="version-numero">v1.1.0</p>
+                  <p class="version-fecha"><i class="fa-regular fa-calendar"></i> Mayo 2026</p>
+                  <span class="chip-estado">Primera versión estable</span>
+              </div>
+
+              <div class="tarjeta-about">
+                  <div class="icono-about"><i class="fa-solid fa-graduation-cap"></i></div>
+                  <h4>Proyecto</h4>
+                  <p>Proyecto Final — Algoritmos Computacionales</p>
+                  <span class="chip-estado" style="margin-top:10px">Desarrollo académico</span>
+              </div>
+
+              <div class="tarjeta-about tarjeta-about-izquierda">
+                  <div class="icono-about"><i class="fa-solid fa-user-group"></i></div>
+                  <h4>Equipo</h4>
+                  <ul class="lista-equipo">
+                      <li><strong>Daireliz Delgado</strong><span class="rol-equipo">Desarrolladora Web / Administradora del Sistema</span></li>
+                      <li><strong>Arianny Nachali Díaz García</strong><span class="rol-equipo">Diseñadora UX/UI / Supervisora de Diseño</span></li>
+                  </ul>
+              </div>
+
+              <div class="tarjeta-about tarjeta-about-izquierda">
+                  <div class="icono-about"><i class="fa-solid fa-globe"></i></div>
+                  <h4>Tecnologías</h4>
+                  <div class="grid-tecnologias">
+                      <span class="chip-tech"><span class="icono-chip-tech marca-html5"><i class="fa-brands fa-html5"></i></span><span>HTML5</span></span>
+                      <span class="chip-tech"><span class="icono-chip-tech marca-css3"><i class="fa-brands fa-css3-alt"></i></span><span>CSS3</span></span>
+                      <span class="chip-tech"><span class="icono-chip-tech marca-js"><i class="fa-brands fa-js"></i></span><span>JavaScript</span></span>
+                      <span class="chip-tech"><span class="icono-chip-tech marca-firebase"><i class="fa-solid fa-fire"></i></span><span>Firebase</span></span>
+                      <span class="chip-tech"><span class="icono-chip-tech marca-netlify"><i class="fa-solid fa-bolt"></i></span><span>Netlify</span></span>
+                      <span class="chip-tech"><span class="icono-chip-tech marca-github"><i class="fa-brands fa-github"></i></span><span>GitHub</span></span>
+                  </div>
+              </div>
+
+              <div class="tarjeta-about tarjeta-about-izquierda">
+                  <div class="icono-about"><i class="fa-solid fa-lock"></i></div>
+                  <h4>Seguridad</h4>
+                  <ul class="lista-check">
+                      <li><i class="fa-solid fa-check"></i> Autenticación por usuario y contraseña.</li>
+                      <li><i class="fa-solid fa-check"></i> Datos almacenados en Firebase con cifrado SSL.</li>
+                      <li><i class="fa-solid fa-check"></i> Protección de información y control de acceso.</li>
+                      <li><i class="fa-solid fa-check"></i> Sesiones seguras.</li>
+                  </ul>
+              </div>
+
+              <div class="tarjeta-about tarjeta-about-izquierda">
+                  <div class="icono-about"><i class="fa-solid fa-list-check"></i></div>
+                  <h4>Funcionalidades</h4>
+                  <div class="grid-funcionalidades">
+                      <span><i class="fa-solid fa-right-to-bracket"></i> Login y registro</span>
+                      <span><i class="fa-regular fa-heart"></i> Favoritos</span>
+                      <span><i class="fa-solid fa-table-columns"></i> Dashboard</span>
+                      <span><i class="fa-solid fa-chart-line"></i> Reportes</span>
+                      <span><i class="fa-solid fa-scissors"></i> Servicios</span>
+                      <span><i class="fa-solid fa-bell"></i> Alertas</span>
+                      <span><i class="fa-solid fa-user-group"></i> Personal</span>
+                      <span><i class="fa-solid fa-calendar-days"></i> Citas</span>
+                  </div>
+              </div>
+
+              <div class="tarjeta-about tarjeta-about-izquierda tarjeta-about-objetivo">
+                  <div class="icono-about"><i class="fa-solid fa-bullseye"></i></div>
+                  <h4>Nuestro objetivo</h4>
+                  <p>Facilitar la gestión de citas y el crecimiento de barberías y salones de belleza, ofreciendo una experiencia moderna, intuitiva y eficiente para clientes y negocios.</p>
+                  <i class="fa-solid fa-bullseye decoracion-objetivo"></i>
+              </div>
+          </div>
+
+          <!-- Barra "¿Por qué BeautifyX?" -->
+          <div class="tarjeta-panel barra-por-que">
+              <div class="titulo-por-que"><i class="fa-solid fa-heart"></i> ¿Por qué BeautifyX?</div>
+              <div class="items-por-que">
+                  <span><i class="fa-solid fa-wand-magic-sparkles"></i> Interfaz intuitiva y moderna</span>
+                  <span><i class="fa-solid fa-mobile-screen-button"></i> Diseño adaptable (Responsive)</span>
+                  <span><i class="fa-solid fa-bolt"></i> Procesos rápidos y eficientes</span>
+                  <span><i class="fa-solid fa-headset"></i> Soporte y mejoras continuas</span>
+                  <span><i class="fa-regular fa-face-smile"></i> Comprometidos con la satisfacción del cliente</span>
+              </div>
+          </div>
+
+          <!-- Pie de página -->
+          <div class="pie-about">
+              <i class="fa-solid fa-shield-halved"></i> BeautifyX © 2026 — Todos los derechos reservados.
           </div>
       </section>
 
