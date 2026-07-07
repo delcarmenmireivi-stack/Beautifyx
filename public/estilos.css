@@ -1,5 +1,5 @@
 /*==========================================================================
-    BEAUTIFYX - ESTILOS COMPLETOS DEL DASHBOARD (v2 - layout de sidebar)
+    BEAUTIFYX - ESTILOS COMPLETOS DEL DASHBOARD (v3 - About rediseñado)
 ==========================================================================*/
 
 :root {
@@ -771,7 +771,9 @@ body.dark-mode .campo-busqueda-wrap:focus-within i { color: var(--color-principa
 }
 .chip-checkbox input { width: auto; margin: 0; }
 
-/* --- ABOUT: GRID ESTILO TARJETAS --- */
+/* ==========================================================================
+   ABOUT — TARJETAS BASE (grid genérico reutilizado por el nuevo diseño)
+========================================================================== */
 .grid-about {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -779,10 +781,14 @@ body.dark-mode .campo-busqueda-wrap:focus-within i { color: var(--color-principa
 }
 
 .tarjeta-about {
-    background: var(--color-fondo);
+    background: #fff;
+    border: 1px solid var(--color-borde);
     border-radius: 14px;
     padding: 20px;
     text-align: center;
+    box-shadow: 0 4px 12px var(--color-sombra);
+    min-width: 0;
+    overflow: hidden;
 }
 
 .tarjeta-about .icono-about {
@@ -800,10 +806,6 @@ body.dark-mode .campo-busqueda-wrap:focus-within i { color: var(--color-principa
 
 .tarjeta-about h4 { margin-bottom: 6px; font-size: .95rem; }
 .tarjeta-about p, .tarjeta-about .lista-equipo { font-size: .82rem; color: var(--color-texto-suave); }
-
-.lista-equipo { list-style: none; text-align: left; }
-.lista-equipo li { margin-bottom: 8px; }
-.lista-equipo strong { color: var(--color-texto); display: block; font-size: .85rem; }
 
 .chips-tecnologias { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .chip {
@@ -824,6 +826,197 @@ body.dark-mode .campo-busqueda-wrap:focus-within i { color: var(--color-principa
     word-break: break-all;
 }
 .caja-enlace a { color: var(--color-principal); font-weight: 600; text-decoration: none; }
+
+/* ==========================================================================
+   ABOUT — REDISEÑO (cabecera con logo, ilustración, chips, checklist,
+   funcionalidades, objetivo, barra "¿Por qué?" y pie de página)
+========================================================================== */
+
+/* Tarjeta de cabecera */
+.tarjeta-about-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cabecera-about-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.icono-about-header {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: var(--color-secundario);
+    color: var(--color-principal-fuerte);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.tarjeta-about-header h2 { font-size: 1.6rem; margin-bottom: 4px; }
+.tarjeta-about-header h2 .resaltado-about { color: var(--color-principal); }
+.cabecera-about-header p { color: var(--color-texto-suave); font-size: .92rem; max-width: 560px; }
+
+.logo-about-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.logo-about-header img { height: 40px; }
+.logo-about-header span { font-weight: 800; font-size: 1.2rem; color: var(--color-texto); }
+
+/* Tarjetas con contenido alineado a la izquierda (equipo, tecnologías, etc) */
+.tarjeta-about-izquierda { text-align: left; }
+.tarjeta-about-izquierda .icono-about { margin: 0 0 12px; }
+
+/* Ilustración decorativa (tarjeta "BeautifyX") */
+.ilustracion-about { margin-top: 14px; }
+.ilustracion-about svg { width: 100%; height: auto; display: block; }
+
+/* Versión / Proyecto: número, fecha y chip de estado */
+.version-numero { font-size: 1.4rem; font-weight: 800; color: var(--color-principal-fuerte); margin: 4px 0 2px; }
+.version-fecha { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--color-texto-suave); font-size: .82rem; margin-bottom: 12px; }
+.chip-estado {
+    display: inline-block;
+    background: #fff;
+    color: var(--color-principal);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+/* Equipo: nombre + rol resaltado */
+.tarjeta-about .lista-equipo { list-style: none; text-align: left; }
+.tarjeta-about .lista-equipo li { margin-bottom: 12px; }
+.tarjeta-about .lista-equipo li:last-child { margin-bottom: 0; }
+.tarjeta-about .lista-equipo strong { display: block; color: var(--color-texto); font-size: .9rem; }
+.rol-equipo { display: block; color: var(--color-principal); font-size: .78rem; font-weight: 600; margin-top: 2px; }
+
+/* Tecnologías: grid de chips con ícono de color de marca */
+.grid-tecnologias { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.chip-tech {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    background: #fff;
+    border: 1px solid var(--color-borde);
+    padding: 7px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: .78rem;
+    color: var(--color-texto);
+    min-width: 0;
+    overflow: hidden;
+}
+.chip-tech span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.chip-tech .icono-chip-tech {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: .68rem;
+    color: #fff;
+}
+.icono-chip-tech.marca-html5 { background: #E44D26; }
+.icono-chip-tech.marca-css3 { background: #1572B6; }
+.icono-chip-tech.marca-js { background: #F7DF1E; color: #2b2733; }
+.icono-chip-tech.marca-firebase { background: #FFA000; }
+.icono-chip-tech.marca-netlify { background: #00C7B7; }
+.icono-chip-tech.marca-github { background: #181717; }
+
+/* Seguridad: checklist */
+.lista-check { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.lista-check li { display: flex; align-items: flex-start; gap: 10px; font-size: .85rem; color: var(--color-texto-suave); }
+.lista-check i { color: var(--color-disponible); margin-top: 3px; }
+
+/* Funcionalidades: grid de 2 columnas con icono */
+.grid-funcionalidades { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.grid-funcionalidades span { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--color-texto); }
+.grid-funcionalidades i { color: var(--color-principal); width: 18px; text-align: center; }
+
+/* Objetivo: texto + ícono decorativo grande de fondo */
+.tarjeta-about-objetivo { position: relative; overflow: hidden; }
+.tarjeta-about-objetivo p { font-size: .88rem; color: var(--color-texto-suave); position: relative; z-index: 1; }
+.decoracion-objetivo {
+    position: absolute;
+    right: -16px;
+    bottom: -16px;
+    font-size: 5rem;
+    color: var(--color-secundario);
+    opacity: .45;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Barra "¿Por qué BeautifyX?" */
+.barra-por-que {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+.titulo-por-que {
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+.titulo-por-que i { color: var(--color-principal); }
+.items-por-que { display: flex; flex-wrap: wrap; gap: 18px; flex: 1; }
+.items-por-que span { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--color-texto-suave); }
+.items-por-que i { color: var(--color-principal); }
+
+/* Pie de página del About */
+.pie-about {
+    text-align: center;
+    background: var(--color-secundario);
+    color: var(--color-principal-fuerte);
+    padding: 14px;
+    border-radius: var(--radio);
+    font-size: .82rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Modo oscuro para el About rediseñado */
+body.dark-mode .icono-about-header { background: #3a3542; color: #f0a9bb; }
+body.dark-mode .chip-estado { background-color: #2b2733; color: #f2eef0; }
+body.dark-mode .chip-tech { background-color: #2b2733; color: #f2eef0; border-color: #3a3542; }
+body.dark-mode .items-por-que span,
+body.dark-mode .tarjeta-about-objetivo p,
+body.dark-mode .lista-check li,
+body.dark-mode .version-fecha { color: #b6adb3; }
+body.dark-mode .pie-about { background: #2b2733; color: #f0a9bb; }
+body.dark-mode .logo-about-header span { color: #f2eef0; }
+body.dark-mode .grid-funcionalidades span { color: #f2eef0; }
+
+@media (max-width: 620px) {
+    .grid-tecnologias, .grid-funcionalidades { grid-template-columns: 1fr; }
+    .barra-por-que { flex-direction: column; align-items: flex-start; }
+    .tarjeta-about-header { flex-direction: column; align-items: flex-start; }
+    .logo-about-header { align-self: flex-start; }
+}
 
 /* --- CLIENTES (tabla-like) --- */
 .tabla-clientes { width: 100%; border-collapse: collapse; }
